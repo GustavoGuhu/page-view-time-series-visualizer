@@ -5,9 +5,7 @@ from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
 # Import data (Make sure to parse dates. Consider setting index column to 'date'.)
-df = pd.read_csv("fcc-forum-pageviews.csv", parse_dates=['date'], index_col =['date']) #
-
-#df.set_index(['date'],inplace=True)
+df = pd.read_csv("fcc-forum-pageviews.csv", parse_dates=['date'], index_col =['date']) 
 
 # Clean data
 df = df[(df['value'] >= (df['value'].quantile(0.025))) & (df['value'] <= (df['value'].quantile(0.975))) ]
@@ -27,8 +25,6 @@ def draw_line_plot():
 
     fig = fig.figure
 
-    #plt.show()
-
     # Save image and return fig (don't change this part)
     fig.savefig('line_plot.png')
     return fig
@@ -37,7 +33,7 @@ def draw_bar_plot():
     # Copy and modify data for monthly bar plot
     df_bar = df.copy()
     month = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-          'August', 'September', 'October', 'November', 'December']
+            'August', 'September', 'October', 'November', 'December']
     df_bar['month'] = pd.Categorical(df_bar.index.strftime('%B'), categories=month, ordered=True)
     df_bar = pd.pivot_table(data=df_bar, index=df_bar.index.year, columns='month', values='value')
 
@@ -81,14 +77,11 @@ def draw_box_plot():
     axes[0].set_title('Year-wise Box Plot (Trend)')
     axes[0].set_xlabel('Year')
     axes[0].set_ylabel('Page Views')
+
     sns.boxplot(ax=axes[1], data = df_box,  x = df_box['month'], y = df_box['value'], order = months)
     axes[1].set_title('Month-wise Box Plot (Seasonality)')
     axes[1].set_ylabel('Page Views')
     axes[1].set_xlabel('Month')
-
-
-
-
 
     fig = fig.figure
 
